@@ -12,3 +12,19 @@ def lambda_handler(event, context): #contains meta data for the file in the buck
 
     print(bucket)
     print(key)
+
+    #get object
+    response = s3Client.get_object(Bucket=bucket, Key=key)
+
+    #process result for CSV files
+    data = response['Body'].read().decode('uft-8') #response is stored in data
+    reader = csv.reader(io.StringIO(data)) #data is read by csv reader 
+    next(reader) #skips column titles
+    for row in reader:
+	    print(str.format("Customer ID" - {}, "Referred a Friend - {}, Number of Referrals - {}", row[0], row[1], row[2]))
+          
+writer = csv.writer(reader)
+writer.writerows(data)
+
+print(f"CSV file has been saved successfully.")
+
